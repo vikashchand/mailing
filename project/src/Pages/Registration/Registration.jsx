@@ -2,10 +2,13 @@ import React from 'react'
 import { useFormik } from "formik";
 import { signUpSchema } from "../../Schemas";
 import { Link } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './Registration.css'
+import axios from 'axios';
 
 const initialValues = {
-    name: "",
+    username: "",
     email: "",
     password: "",
     confirm_password: "",
@@ -17,49 +20,58 @@ const Registration = () => {
       initialValues,
       validationSchema: signUpSchema,
       onSubmit: (values, action) => {
-        console.log(
-          "🚀 ~ file: Registration.jsx ~ line 11 ~ Registration ~ values",
-          values
-        );
+        
         action.resetForm();
       },
     });
-  console.log(
-    "🚀 ~ file: Registration.jsx ~ line 25 ~ Registration ~ errors",
-    errors
-  );
+ 
 
+  const signupHandle =()=>{
+    axios.post('http://localhost:5000/user/register',{
+      username:values.username,email:values.email,password:values.password
+    }).then((data)=>{
+      if(data.data.status===200){
+        toast.success(data.data.message)
+      }
+      else{
+        toast.error(data.data.message)
+      }
+    })
+    .catch((error)=>toast.error(error))
+  }
+  
 
   return (
     <>
  
     <div className="container">
+    <ToastContainer/>
       <div className="modal">
         <div className="modal-container">
           <div className="modal-left">
             <h1 className="modal-title">Welcome!</h1>
             <p className="modal-desc">
-              Infosys project
+             
             </p>
             <form onSubmit={handleSubmit}>
               <div className="input-block">
-                <label htmlFor="name" className="input-label">
-                  Name
+                <label htmlFor="username" className="input-label">
+                username
                 </label>
                 <input
                   type="name"
                   autoComplete="off"
-                  name="name"
-                  id="name"
-                  placeholder="Name"
-                  value={values.name}
+                  name="username"
+                  id="username"
+                  placeholder="username"
+                  value={values.username}
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
                 
               </div>
-              {errors.name && touched.name ? (
-                <p className="form-error">{errors.name}</p>
+              {errors.username && touched.username ? (
+                <p className="form-error">{errors.username}</p>
               ) : null}
               <div className="input-block">
                 <label htmlFor="email" className="input-label">
@@ -120,7 +132,9 @@ const Registration = () => {
               ) : null}
               <div className="modal-buttons">
                 
-                <button className="input-button" type="submit">
+                <button className="input-button" type="submit" 
+                onClick={signupHandle}
+                >
                   Registration
                 </button>
               </div>

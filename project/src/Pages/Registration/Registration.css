@@ -4,7 +4,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #efedee;
+    background-color: #E5E0FF;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -97,10 +97,10 @@
     border: 0;
     color: #fff;
     border-radius: 4px;
-    background: #8c7569;
+    background: #905738;
     transition: 0.3s;
     cursor: pointer;
-    font-family: "Nunito", sans-serif;
+   
   }
   .input-button:hover {
     background: #55311c;

@@ -1,41 +1,56 @@
+
 import React from 'react';
-import { useFormik } from "formik";
-import { loginSchema } from "../../Schemas/index"
+import { useFormik } from 'formik';
+import { loginSchema } from '../../Schemas/index';
 import { Link } from 'react-router-dom';
-import '../Registration/Registration.css'
+import '../Registration/Registration.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const initialValues = {
-  email: "",
-  password: "",
+  identifier: '',
+  password: '',
 };
 
 const Login = () => {
-  const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
-    useFormik({
-      initialValues,
-      validationSchema: loginSchema,
-      onSubmit: (values, action) => {
-        console.log("Login Form Values:", values);
-        action.resetForm();
-      },
-    });
+  const navigate = useNavigate();
+  const {
+    values,
+    errors,
+    touched,
+    handleBlur,
+    handleChange,
+    handleSubmit,
+  } = useFormik({
+    initialValues,
+    validationSchema: loginSchema,
+    onSubmit: (values, action) => {
+      console.log('Login Form Values:', values);
+      action.resetForm();
+    },
+  });
 
-    const loginHandle=()=>{
-      axios.post('http://localhost:5000/user/login',
-      {email:values.email,password:values.password})
-      .then(data=>{
-        if(data.data.status===200){
-          toast.success(data.data.message)
-        }
-        else{
+  const loginHandle = () => {
+    axios
+      .post('http://localhost:5000/user/login',{
+        identifier: values.identifier,  // Add the identifier value here
+  password: values.password
+      })
+      .then((data) => {
+        console.log(data.data);
+        if (data.data.status === 200) {
+          localStorage.setItem('userInfo', data.data.token);
+          toast.success(data.data.message);
+          navigate('/home');
+        } else {
           toast.error(data.data.message);
         }
       })
-      .catch(error=>console.log(error))
-    }
+      .catch((error) => console.log(error));
+  };
+
   return (
     <>
       <div className="container">
@@ -44,26 +59,26 @@ const Login = () => {
             <div className="modal-left">
               <h1 className="modal-title">Welcome Back!</h1>
               <p className="modal-desc">
-                Infosys project - Login to your account
+                 project - Login to your account
               </p>
               <ToastContainer />
               <form onSubmit={handleSubmit}>
                 <div className="input-block">
-                  <label htmlFor="email" className="input-label">
+                  <label htmlFor="identifier" className="input-label">
                     Username or Email
                   </label>
                   <input
                     type="text"
                     autoComplete="off"
-                    name="email"
-                    id="email"
+                    name="identifier"
+                    id="identifier"
                     placeholder="Username or Email"
-                    value={values.email}
+                    value={values.identifier}
                     onChange={handleChange}
                     onBlur={handleBlur}
                   />
-                  {errors.email && touched.email ? (
-                    <p className="form-error">{errors.email}</p>
+                  {errors.identifier && touched.identifier ? (
+                    <p className="form-error">{errors.identifier}</p>
                   ) : null}
                 </div>
                 <div className="input-block">
@@ -85,14 +100,14 @@ const Login = () => {
                   ) : null}
                 </div>
                 <div className="modal-buttons">
-                  <button className="input-button" type="submit"
-                  onClick={()=>{
-
-                    loginHandle()
-                  }}
+                  <button
+                    className="input-button"
+                    type="submit"
+                    onClick={() => {
+                      loginHandle();
+                    }}
                   >
                     Login
-                    
                   </button>
                 </div>
               </form>
@@ -104,13 +119,17 @@ const Login = () => {
               <img
                 src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Y29tcHV0ZXJ8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60"
                 alt=""
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
-  );
-};
-
-export default Login;
+                />
+                </div>
+                </div>
+                </div>
+                </div>
+                </>
+                );
+                };
+                
+                export default Login;
+                
+               
+                
+                
