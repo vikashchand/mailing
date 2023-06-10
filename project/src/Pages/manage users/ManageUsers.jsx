@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import './ManageUser.css';
 
 const ManageUsers = () => {
   const [users, setUsers] = useState([]);
@@ -38,9 +39,11 @@ const ManageUsers = () => {
   };
 
   return (
-    <div>
+
+    <div className="manage-users-container">
+     <div className='emplist'>
       <h2>Employee List</h2>
-      <table style={{ borderCollapse: 'collapse', border: '1px solid black' }}>
+      <table>
         <thead>
           <tr>
             <th>ID</th>
@@ -59,19 +62,19 @@ const ManageUsers = () => {
         <tbody>
           {users.map((user) => (
             <tr key={user.id}>
-              <td style={{ border: '1px solid black', padding: '5px' }}>{user.id}</td>
-              <td style={{ border: '1px solid black', padding: '5px' }}>{user.username}</td>
-              <td style={{ border: '1px solid black', padding: '5px' }}>{user.email}</td>
-              <td style={{ border: '1px solid black', padding: '5px' }}>{user.is_admin}</td>
-              <td style={{ border: '1px solid black', padding: '5px' }}>{user.is_verified}</td>
-              <td style={{ border: '1px solid black', padding: '5px' }}>{user.last_login}</td>
-              <td style={{ border: '1px solid black', padding: '5px' }}>{user.account_status}</td>
-              <td style={{ border: '1px solid black', padding: '5px' }}>{user.created_at}</td>
-              <td style={{ border: '1px solid black', padding: '5px' }}>{user.updated_at}</td>
-              <td style={{ border: '1px solid black', padding: '5px' }}>
+              <td className='tablerow' >{user.id}</td>
+              <td className='tablerow' >{user.username}</td>
+              <td className='tablerow'>{user.email}</td>
+              <td className='tablerow'>{user.is_admin}</td>
+              <td className='tablerow'>{user.is_verified}</td>
+              <td className='tablerow'>{user.last_login}</td>
+              <td className='tablerow'>{user.account_status}</td>
+              <td className='tablerow'>{user.created_at}</td>
+              <td className='tablerow'>{user.updated_at}</td>
+              <td className='tablerow'>
                 <button onClick={() => handleRemoveEmployee(user.id)}>Remove</button>
               </td>
-              <td style={{ border: '1px solid black', padding: '5px' }}>
+              <td className='tablerow'>
                 {user.account_status === 'active' ? (
                   <button onClick={() => handleToggleAccountStatus(user.id, 'inactive')}>Set as Inactive</button>
                   ) : (
@@ -83,6 +86,8 @@ const ManageUsers = () => {
                   </tbody>
                   </table>
                   </div>
+</div>
+
                   );
                   };
                   

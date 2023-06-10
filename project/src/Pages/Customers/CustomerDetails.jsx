@@ -3,7 +3,7 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FaUpload } from 'react-icons/fa';
-import './cCustomerDetails.css';
+import './CustomerDetails.css';
 
 const CustomerDetails = () => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -58,7 +58,8 @@ const CustomerDetails = () => {
   };
 
   return (
-    <div className="send-mail-container">
+    <div className="customer-details-container">
+    <div className="custlist">
       <h2>Upload Excel Sheet</h2>
       <form onSubmit={handleSubmit}>
         <label htmlFor="file-upload" className="template-section custom-file-upload">
@@ -68,9 +69,11 @@ const CustomerDetails = () => {
         </label>
         <button type="submit">Upload</button>
       </form>
+      <ToastContainer />
 
+     
       <h1>Mailing list details</h1>
-      <table style={{ borderCollapse: 'collapse', border: '1px solid black' }}>
+      <table >
         <thead>
           <tr>
             <th>Customer_email</th>
@@ -83,11 +86,11 @@ const CustomerDetails = () => {
         <tbody>
           {customers.map((user) => (
             <tr key={user.customer_email}>
-              <td style={{ border: '1px solid black', padding: '5px' }}>{user.customer_email}</td>
-              <td style={{ border: '1px solid black', padding: '5px' }}>{user.customer_name}</td>
-              <td style={{ border: '1px solid black', padding: '5px' }}>{user.template_id}</td>
-              <td style={{ border: '1px solid black', padding: '5px' }}>{user.status}</td>
-              <td style={{ border: '1px solid black', padding: '5px' }}>
+              <td className='tableroww'>{user.customer_email}</td>
+              <td className='tableroww'>{user.customer_name}</td>
+              <td className='tableroww'>{user.template_id}</td>
+              <td className='tableroww'>{user.status}</td>
+              <td className='tableroww'>
                 {user.status !== 'sent' && (
                   <button onClick={() => handleSetStatus(user.customer_email,'sent')}>Send Now</button>
                 )}
@@ -96,17 +99,13 @@ const CustomerDetails = () => {
               ))}
             </tbody>
           </table>
-        </div>
+
+          </div>
+          </div>
+       
         );
         };
         
-        const App = () => {
-        return (
-        <div>
-        <CustomerDetails />
-        <ToastContainer />
-        </div>
-        );
-        };
         
-        export default App;
+        
+        export default CustomerDetails;
