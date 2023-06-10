@@ -9,5 +9,6 @@ Router.delete('/deleteuser/:id', userService.deleteUser);
 Router.put('/updateuser/:id', userService.updateUserAccountStatus);
 Router.get('/customerDetails',userService.customerList);
 Router.put('/updatecustomerDetails/:id', userService.updatecustomerStatus);
+Router.post('/forget-Password', userService.forgetPassword);
 
 module.exports=Router

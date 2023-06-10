@@ -65,92 +65,6 @@ const sendWelcomeEmail = async (email) => {
   let loggedInUserEmail = '';
   
 
-  
-
-
-  // const userLogin = async (req, res) => {
-  //   const { identifier, password } = req.body;
-  
-  //   const checkPassword = async (data) => {
-  //     if (data.length > 0) {
-  //       const hashedPassword = data[0].password;
-  
-  //       console.log('Entered Password:', password);
-  //       console.log('Hashed Password from DB:', data[0].password);
-  
-  //       const sqlQuery2 = `SELECT * FROM users WHERE is_admin = '${data[0].is_admin}'`;
-  
-  //       const isMatch = await bcrypt.compareSync(password.trim(), hashedPassword);
-  
-  //       if (isMatch) {
-  //         await dbCon.query(sqlQuery2, async (error, data2) => {
-  //           if (data2) {
-  //             const auth = jwt.sign({ data: data2 }, securityKey);
-  //             await dbCon.query(`UPDATE users SET last_login = NOW() WHERE id = '${data[0].id}'`);
-              
-  //             res.json({
-  //               status: 200,
-  //               message: 'Login success',
-  //               token: auth,
-  //               email: data2[0].email,
-  //             });
-  
-  //             await auditLog(data2[0].email, 'login');
-  //             await sendWelcomeEmail(data2[0].email);
-  //           }
-  //         });
-  //       } else {
-  //         res.json({
-  //           status: 400,
-  //           message: 'Password does not match',
-  //         });
-  //       }
-  //     }
-  //   };
-  
-  //   const sqlQuery = `SELECT * FROM users WHERE email = ?`;
-  //   const sqlQuery1 = `SELECT * FROM users WHERE username = ?`;
-  
-  //   try {
-  //     console.log('Executing SQL Query:', sqlQuery, [identifier]);
-  //     const data = await executeQuery(sqlQuery, [identifier]);
-  
-  //     if (data.length === 0) {
-  //       console.log('Executing SQL Query:', sqlQuery1, [identifier]);
-  //       const data1 = await executeQuery(sqlQuery1, [identifier]);
-  
-  //       if (data1.length === 0) {
-  //         res.json({
-  //           status: 400,
-  //           message: 'User does not exist',
-  //         });
-  //       } else {
-  //         checkPassword(data1);
-  //       }
-  //     } else {
-  //       checkPassword(data);
-  //     }
-  //   } catch (error) {
-  //     console.error('Error:', error);
-  //     res.json({
-  //       message: error.message,
-  //     });
-  //   }
-  // };
-  
-  // const executeQuery = (sql, params) => {
-  //   return new Promise((resolve, reject) => {
-  //     dbCon.query(sql, params, (error, data) => {
-  //       if (error) {
-  //         reject(error);
-  //       } else {
-  //         resolve(data);
-  //       }
-  //     });
-  //   });
-  // };
-
-
 
 
   const userLogin = async (req, res) => {
@@ -250,13 +164,6 @@ const sendWelcomeEmail = async (email) => {
     });
   };
   
-
-
-
-
-
-
-
 
 
 
@@ -449,5 +356,121 @@ console.log("hiii",id);
 
   });
 };
+
+
+
+
+
+
+
+const forgetPassword = (req, res) => {
+  var email = req.body.email;
+  dbCon.query('SELECT * FROM users WHERE email=? limit 1', email, function(error, result, fields) {
+    if (error) {
+      console.log(error);
+      return res.status(400).json({ message: error });
+    }
+
+    if (result.length > 0) {
+      let mailSubject = 'forget password';
+      const randomToken = randomstring.generate();
+      let content = '<p>hii ' + result[0].username + '</p><p>please click on the link to reset your password</p><a href="http://localhost:5000/forget-Password?token=' + randomToken + '">click here</a>';
+      sendMail(email, mailSubject, content);
+
+      dbCon.query(`DELETE FROM password_resets where email ='${email}'`);
+      dbCon.query(`INSERT into password_resets(email,token) values('${email}','${randomToken}')`);
+
+      return res.status(200).json({ status: 200, message: 'Reset Email has been sent to mail' });
+    }
+
+    return res.status(404).json({ status: 404, message: 'Email not found' });
+  });
+};
+
+
+
+
+const resetPassword= (req,res)=>{
+
+
+
+try {
+  var token=req.query.token;
+  if(token==undefined){
+   res.render('404');
+  }
+
+dbCon.query('SELECT * FROM password_resets WHERE token=?',token,function(error,result,fields){
+
+if(error){
+  console.log(error.message); }
+
+if(result.length>0){
+
+  dbCon.query('SELECT * FROM users WHERE email=?',result[0].email,function(error,result,fields){
+
+    if(error){
+      console.log(error.message); }
+
+
       
-      module.exports = { userLogin, userSignup, getLoggedInUserEmail ,verifyMail,deleteUser,usersList,customerList,updateUserAccountStatus,updatecustomerStatus};
+  res.render('reset-password',{user:result[0]});
+  });
+
+
+}
+else{
+  res.render('404');
+}
+
+}
+)
+} catch (error) {
+  console.log(error.message);
+}
+
+
+}
+
+
+
+
+const resetPasswordPost = (req, res) => {
+
+  const updatedTime = new Date().toISOString("en-US", { timeZone: "Asia/Kolkata" });
+  if (req.body.password !== req.body.confirm_password) {
+    res.render('reset-password', {error_message:'Password does not match',user:{id:req.body.user_id,email:req.body.email}});
+   
+  }
+
+  bcrypt.hash(req.body.confirm_password,10,(err,hash)=>{
+if(err){
+
+  console.log(err);
+}
+
+dbCon.query(`DELETE FROM password_resets where email ='${req.body.email}'`);
+
+dbCon.query(`UPDATE  users SET password ='${hash}' where id ='${req.body.user_id}'`);
+
+dbCon.query(`UPDATE  users SET updated_at ='${updatedTime}' where id ='${req.body.user_id}'`);
+
+
+return res.render('message', {
+  message: 'Your password has been changed successfully',
+  loginLink: 'http://localhost:3000/login'
+});
+
+
+  })
+}
+
+
+
+      
+      module.exports = { userLogin, userSignup, 
+        getLoggedInUserEmail ,
+        verifyMail,deleteUser,
+        usersList,customerList,updateUserAccountStatus,
+        updatecustomerStatus,
+        forgetPassword,resetPassword,resetPasswordPost};

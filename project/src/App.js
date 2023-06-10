@@ -8,6 +8,7 @@ import NotFound from './Pages/NotFound';
 
 import Task from './Pages/tasks/Task';
 import Email from './email temp/Email';
+import ResetPassword from './Pages/Login/ResetPassword';
 
 
 
@@ -20,7 +21,7 @@ function App() {
       <Route path="/" element={<Registration />} />
       <Route path="/login" element={<Login />} />
       <Route path="/email" element={<Email />} />
-     
+      <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/home/*" element={<Home />} />
       
       <Route path="/temp/*" element={<Task/>} />

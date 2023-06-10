@@ -112,8 +112,12 @@ const Login = () => {
                 </div>
               </form>
               <p className="sign-up">
+                <Link to="/reset-password">Reset Password</Link>
+              </p>
+              <p className="sign-up">
                 Don't have an account? <Link to="/">Sign Up now</Link>
               </p>
+            
             </div>
             <div className="modal-right">
               <img
