@@ -3,6 +3,8 @@
   width: 100%;
 
   box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
 }
 
 .templ {
@@ -44,6 +46,7 @@
   border-radius: 5px;
 }
 
+
 .template-preview .preview-body {
   width: 100%;
   max-width: 100%;
@@ -51,7 +54,24 @@
   font-size: 12px;
   margin-bottom: 0px;
 }
+ .tableroww {
+  border: 1px solid rgb(255, 254, 254);
+  padding: 0.5px;
+  width: 10%;
+  align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+}
 
+ table {
+  border: 1px solid rgb(255, 254, 254);
+  border-radius: 4px;
+  width: 50%;
+}
+table button {
+  padding: 4px;
+  
+}
 /* Media Query for small devices */
 @media (max-width: 768px) {
   .managetemp-container {

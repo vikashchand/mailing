@@ -105,29 +105,65 @@ const ManageTemplate = () => {
   return (
 
     <div className='managetemp-container'>
+      
+  
+    <ToastContainer
+position="bottom-right"
+autoClose={1000}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+theme="dark"
+/>
       {!isCreatingTemplate && !currentTemplate && !previewTemplate && (
         <div className=''>
         <br></br>
         <br></br>
         <br></br>
+       
         <button onClick={handleCreate}>Create New Template</button>
           <h3>Available Templates</h3>
-          {templates.map(template => (
-            <div className="templ templateedits" key={template.id}>
-              <div>
-                <h3>{template.Type}</h3>
-              </div>
-              <button onClick={() => handleEdit(template)}>Edit</button>
-              <button onClick={() => handleDelete(template.id)}>Delete</button>
-              <button onClick={() => handlePreview(template)}>View</button>
-            </div>
-          ))}
-         
+          <div className="managetemp-container">
+          <table className='templist'>
+            <thead>
+              <tr>
+                <th>Template Type</th>
+                <th>Edit</th>
+                <th>Delete</th>
+                <th>View</th>
+              </tr>
+            </thead>
+            <tbody>
+              {templates.map(template => (
+                <tr key={template.id}>
+                  <td className='tableroww'>{template.Type}</td>
+                  <td className='tableroww'>
+                    <button onClick={() => handleEdit(template)}>Edit</button>
+                  </td>
+                  <td className='tableroww'>
+                    <button onClick={() => handleDelete(template.id)}>Delete</button>
+                  </td>
+                  <td  className='tableroww'>
+                    <button onClick={() => handlePreview(template)}>View</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        
         </div>
       )}
 
       {currentTemplate && (
         <div className="template-editor ">
+        <br></br>
+        <br></br>
+        <br></br>
           <h3>Edit Template</h3>
           <textarea 
             value={currentTemplate.body}

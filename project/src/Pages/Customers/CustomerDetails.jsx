@@ -35,19 +35,84 @@ const handleCustomerCheckboxChange = (event, customerEmail) => {
   }
 };
 
+// const handleSendNow = async () => {
+//   try {
+//     // Perform the send now action for the selected customers
+//     for (const customerEmail of selectedCustomers) {
+//       await axios.put(`http://localhost:5000/user/updatecustomerDetails/${customerEmail}`, { status: 'sent' });
+//       await axios.post('http://localhost:5000/mail/send-email', {
+      
+//         customerEmail,
+//       });
+//     }
+//     fetchUsers();
+//     setSelectedCustomers([]); // Clear the selected customers
+//     setSelectAll(false); // Uncheck the "Select All" checkbox
+//   } catch (error) {
+//     console.error('Error updating account status:', error);
+//   }
+// };
+
+// const handleSendNow = async () => {
+//   try {
+//     // Perform the send now action for the selected customers
+//     for (const customerEmail of selectedCustomers) {
+//       const customer = customers.find(user => user.customer_email === customerEmail);
+//       if (customer && customer.status !== 'sent') {
+//         try {
+//           await axios.post('http://localhost:5000/mail/send-email', {
+//             recipientEmail: customerEmail,
+//             templateName: customer.template_name
+//           });
+//           // If email sent successfully, update the status to 'sent'
+//           await axios.put(`http://localhost:5000/user/updatecustomerDetails/${customerEmail}`, { status: 'sent' });
+//         } catch (error) {
+//           console.error('Error sending email:', error);
+//           // If an error occurred while sending email, update the status to 'error'
+//           await axios.put(`http://localhost:5000/user/updatecustomerDetails/${customerEmail}`, { status: 'error' });
+//         }
+//       }
+//     }
+//     fetchUsers();
+//     setSelectedCustomers([]); // Clear the selected customers
+//     setSelectAll(false); // Uncheck the "Select All" checkbox
+//   } catch (error) {
+//     console.error('Error updating account status:', error);
+//   }
+// };
 const handleSendNow = async () => {
   try {
     // Perform the send now action for the selected customers
     for (const customerEmail of selectedCustomers) {
-      await axios.put(`http://localhost:5000/user/updatecustomerDetails/${customerEmail}`, { status: 'sent' });
+      const customer = customers.find(user => user.customer_email === customerEmail);
+      if (customer && customer.status !== 'sent') {
+        try {
+          await axios.post('http://localhost:5000/mail/send-email', {
+            recipientEmail: customerEmail,
+            templateName: customer.template_name
+          });
+          // If email sent successfully, update the status to 'sent'
+          await axios.put(`http://localhost:5000/user/updatecustomerDetails/${customerEmail}`, { status: 'sent' });
+          toast.success(`Email sent to ${customerEmail}`); // Display success toast message
+        } catch (error) {
+          console.error('Error sending email:', error);
+          const errorMessage = error.response?.data?.error || 'Error sending email';
+          toast.error(errorMessage); // Display error toast message
+          // If an error occurred while sending email, update the status to 'error' and display the error message
+          await axios.put(`http://localhost:5000/user/updatecustomerDetails/${customerEmail}`, { status: errorMessage });
+        }
+      }
     }
     fetchUsers();
     setSelectedCustomers([]); // Clear the selected customers
     setSelectAll(false); // Uncheck the "Select All" checkbox
   } catch (error) {
     console.error('Error updating account status:', error);
+    toast.error('Error sending email'); // Display error toast message
   }
 };
+
+
 
   useEffect(() => {
     fetchUsers();
@@ -112,7 +177,18 @@ const handleSendNow = async () => {
           </label>
           <button className='button' type="submit">Upload</button>
         </form>
-        <ToastContainer />
+        <ToastContainer
+        position="bottom-right"
+        autoClose={1000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+        />
 
         <h1>Mailing list details</h1>
         <button className='button' onClick={generateReport}>
@@ -127,7 +203,7 @@ const handleSendNow = async () => {
   
   <th>Customer_email</th>
   <th>Customer_name</th>
-  <th>Template_id</th>
+  <th>Template_name</th>
   <th>Status</th>
   <th> Select All
     <input
@@ -147,7 +223,7 @@ const handleSendNow = async () => {
       
     </td>
     <td className="tableroww">{user.customer_name}</td>
-    <td className="tableroww">{user.template_id}</td>
+    <td className="tableroww">{user.template_name}</td>
     <td className="tableroww">{user.status}</td>
     <td className="tableroww">
       

@@ -65,7 +65,18 @@ const Login = () => {
               <p className="modal-desc">
                  project - Login to your account
               </p>
-              <ToastContainer />
+              <ToastContainer
+              position="bottom-right"
+              autoClose={1000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="dark"
+              />
               <form onSubmit={handleSubmit}>
                 <div className="input-block">
                   <label htmlFor="identifier" className="input-label">

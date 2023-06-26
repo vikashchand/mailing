@@ -50,7 +50,18 @@ const Registration = () => {
   </div>
     <div className="container">
     
-    <ToastContainer/>
+    <ToastContainer
+    position="bottom-right"
+    autoClose={1000}
+    hideProgressBar={false}
+    newestOnTop={false}
+    closeOnClick
+    rtl={false}
+    pauseOnFocusLoss
+    draggable
+    pauseOnHover
+    theme="dark"
+    />
       <div className="modal">
         <div className="modal-container">
           <div className="modal-left">

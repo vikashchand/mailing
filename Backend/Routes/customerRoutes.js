@@ -43,7 +43,7 @@ const values = dataWithoutHeadings.map(row => [
 ]);
 
 console.log(values);
-const query = "INSERT INTO customers (customer_email, customer_name, template_id, status,uploadedby	) VALUES ?";
+const query = "INSERT INTO customers (customer_email, customer_name, template_name, status,uploadedby	) VALUES ?";
 
 dbCon.query(query, [values], (error, results) => {
   if (error) {
