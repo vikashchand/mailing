@@ -43,6 +43,7 @@
   font-size: 80%; /* Adjust the font size as needed */
 
   background-image: linear-gradient(to right, #000000 0%, #140f19  51%, #000000  100%);
+  background-image: linear-gradient(to right, #000000 0%, #53346D  51%, #000000  100%);
   padding: 10px;
   padding-left: 0;
   padding-right: 0;
@@ -51,8 +52,8 @@
   text-transform: uppercase;
   transition: 0.5s;
   background-size: 200% auto;
-  color: white;            
-  box-shadow: 0 0 0px #eee;
+  color: rgb(204, 173, 255);            
+  box-shadow: 0 0 5px #804f4f;
   
 }
 
@@ -66,6 +67,16 @@
 .sidenav-container a.active-link {
   font-weight: lighter;
   background-color: #3017ba;
+}
+
+
+
+
+
+.sidenav-container a:hover {
+  background-position: right center; /* change the direction of the change here */
+  color: #fff;
+  text-decoration: none;
 }
 
 

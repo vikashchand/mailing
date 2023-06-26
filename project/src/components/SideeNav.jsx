@@ -5,9 +5,11 @@ import jwtDecode from 'jwt-decode';
 import { NavLink } from 'react-router-dom';
 import './SideeNav.css'; // Import the CSS file
 import { FaBars } from 'react-icons/fa';
-import { FaEnvelope, FaTasks } from 'react-icons/fa';
-import {BsFillPeopleFill} from 'react-icons/bs';
-import { FcCustomerSupport } from 'react-icons/fc';
+import { FaEnvelope } from 'react-icons/fa';
+
+import {HiUserGroup} from 'react-icons/hi';
+import{MdAdminPanelSettings} from 'react-icons/md';
+
 import { AiFillHome } from 'react-icons/ai';
 import { FiLogOut} from 'react-icons/fi'
 
@@ -40,19 +42,16 @@ const SideeNav = () => {
     {isNavOpen ? 'Home' : <AiFillHome />}
       
     </NavLink>
-          <NavLink to={'/home/about'}>
-          {isNavOpen ? 'Send Mail' : <FaEnvelope />}
-            
-          </NavLink>
+          
           
           {role ==1 && (
 
             <>
             <NavLink to={'/home/task'}>
-            {isNavOpen ? 'Manage templates' : <FaTasks />}
+            {isNavOpen ? 'Manage templates' : <FaEnvelope />}
             </NavLink>
             <NavLink to="/home/employees">
-            {isNavOpen ? 'Manage Employees' : <BsFillPeopleFill />}
+            {isNavOpen ? 'Manage Employees' : <MdAdminPanelSettings/>}
             
             
             
@@ -67,7 +66,7 @@ const SideeNav = () => {
 
         <NavLink to={'/home/Customers'}>
        
-            {isNavOpen ? 'Customer Details' : <FcCustomerSupport/>}
+            {isNavOpen ? 'Customer Details' : <HiUserGroup/>}
 
        
           </NavLink>

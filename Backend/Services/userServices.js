@@ -467,10 +467,77 @@ return res.render('message', {
 
 
 
+
+// GET request to fetch all templates
+const fetchTemp = (req, res) => {
+  dbCon.query('SELECT * FROM templates', (error, results) => {
+    if (error) {
+      console.log(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    } else {
+      res.json(results);
+    }
+  });
+};
+
+// POST request to create a new template
+const newTemp = (req, res) => {
+  const { body, type } = req.body;
+
+  dbCon.query('INSERT INTO templates (body, type) VALUES (?, ?)', [body, type], (error, results) => {
+    if (error) {
+      console.log(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    } else {
+      res.sendStatus(201);
+    }
+  });
+};
+
+
+// PUT request to update a template
+const updateTemp = (req, res) => {
+  const templateId = req.params.id;
+  const { body } = req.body;
+
+  dbCon.query('UPDATE templates SET body = ? WHERE id = ?', [body, templateId], (error, results) => {
+    if (error) {
+      console.log(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    } else {
+      res.sendStatus(200);
+      console.log(results);
+    }
+  });
+};
+
+// DELETE request to delete a template
+const DeleteTemp =(req, res) => {
+  const templateId = req.params.id;
+
+  dbCon.query('DELETE FROM templates WHERE id = ?', [templateId], (error, results) => {
+    if (error) {
+      console.log(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    } else {
+      res.sendStatus(200);
+    }
+  });
+};
+
+
+
+
+
+
+
       
       module.exports = { userLogin, userSignup, 
         getLoggedInUserEmail ,
         verifyMail,deleteUser,
         usersList,customerList,updateUserAccountStatus,
         updatecustomerStatus,
-        forgetPassword,resetPassword,resetPasswordPost};
+        forgetPassword,resetPassword,resetPasswordPost
+      ,fetchTemp,newTemp,updateTemp,DeleteTemp
+      
+      };
