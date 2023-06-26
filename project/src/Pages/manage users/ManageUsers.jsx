@@ -18,13 +18,16 @@ const ManageUsers = () => {
     }
   };
 
+  
   const handleRemoveEmployee = async (employeeId) => {
-    try {
-      await axios.delete(`http://localhost:5000/user/deleteuser/${employeeId}`);
-
-      fetchUsers();
-    } catch (error) {
-      console.error('Error removing employee:', error);
+    const confirmed = window.confirm('Are you sure you want to remove this employee?');
+    if (confirmed) {
+      try {
+        await axios.delete(`http://localhost:5000/user/deleteuser/${employeeId}`);
+        fetchUsers();
+      } catch (error) {
+        console.error('Error removing employee:', error);
+      }
     }
   };
 
@@ -76,9 +79,9 @@ const ManageUsers = () => {
               </td>
               <td className='tablerow'>
                 {user.account_status === 'active' ? (
-                  <button onClick={() => handleToggleAccountStatus(user.id, 'inactive')}>Set as Inactive</button>
+                  <button className='btn' onClick={() => handleToggleAccountStatus(user.id, 'inactive')}>Set as Inactive</button>
                   ) : (
-                  <button onClick={() => handleToggleAccountStatus(user.id, 'active')}>Set as Active</button>
+                  <button className='btn' onClick={() => handleToggleAccountStatus(user.id, 'active')}>Set as Active</button>
                   )}
                   </td>
                   </tr>

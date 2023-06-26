@@ -46,8 +46,8 @@ const SendMailPage = () => {
           onChange={(e) => setRecipientEmail(e.target.value)}
         />
       </div>
-      <div className="button-section">
-        <button onClick={handleSendEmail}>Send Email</button>
+      <div className="button-section ">
+        <button className='button' onClick={handleSendEmail}>Send Email</button>
       </div>
       
     </div>

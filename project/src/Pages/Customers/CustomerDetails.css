@@ -4,7 +4,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #e5e0ff;
+
   width: 100%;
 }
 
@@ -22,7 +22,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 2px dashed gray;
+  border: 2px dashed rgb(253, 250, 250);
   padding: 1rem;
   cursor: pointer;
   width: 80%;
@@ -34,16 +34,36 @@
 }
 
 .customer-details-container .tableroww {
-  border: 1px solid black;
+  border: 1px solid rgb(255, 254, 254);
   padding: 0.5px;
   width: 10%;
   align-items: center;
     justify-content: center;
+    border-radius: 4px;
 }
 
 .customer-details-container table {
-  border: 1px solid black;
+  border: 1px solid rgb(255, 254, 254);
+  border-radius: 4px;
   width: 50%;
+}
+
+.fm {
+  align-items: center;
+ 
+  display: flex;
+  flex-direction: column;
+  
+}
+.customer-details-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-image: url("../../assets/background.png");
+    background-color: black;
+  width: 100%;
+  height: 95.7vh;
 }
 
 /* Hide columns on small screens */

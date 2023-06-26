@@ -3,13 +3,14 @@ const multer = require('multer');
 const XLSX = require('xlsx');
 const router = express.Router();
 const dbCon = require('../config/dbConfig');
-
+const userServices = require('../Services/userServices');
 const upload = multer({ dest: 'uploads/' });
 
 
 
 // Route for file upload
 router.post('/upload', upload.single('file'), (req, res) => {
+  const email = userServices.getLoggedInUserEmail();
   const file = req.file;
   if (!file) {
     return res.status(400).json({ error: 'No file uploaded' });
@@ -37,10 +38,12 @@ const values = dataWithoutHeadings.map(row => [
   row[emailColumnIndex],
   row[customerNameColumnIndex],
   row[templateIdColumnIndex],
-  row[statusColumnIndex]
+  row[statusColumnIndex],
+  email
 ]);
 
-const query = "INSERT INTO customers (customer_email, customer_name, template_id, status) VALUES ?";
+console.log(values);
+const query = "INSERT INTO customers (customer_email, customer_name, template_id, status,uploadedby	) VALUES ?";
 
 dbCon.query(query, [values], (error, results) => {
   if (error) {

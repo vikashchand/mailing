@@ -14,7 +14,7 @@ const webRouter=require('./Routes/webRoutes')
 const templateRoutes = require('./Routes/templateRoutes');
 
 const customerRoutes = require('./Routes/customerRoutes');
-
+const report=require("./Routes/report");
 
 const bodyParser = require('body-parser')
 const mailRoutes = require('./Routes/mailRoutes');
@@ -40,6 +40,7 @@ app.use('/user', user);
 app.use('/mail', mailRoutes);
 app.use('/', webRouter);
 app.use('/', customerRoutes);
+app.use('/', report);
 const PORT =process.env.PORT
 
 app.listen(PORT,console.log(`server is listening on ${PORT}`))

@@ -8,7 +8,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
+import work from '../../assets/work.jpg';
 const initialValues = {
   identifier: '',
   password: '',
@@ -43,7 +43,7 @@ const Login = () => {
         if (data.data.status === 200) {
           localStorage.setItem('userInfo', data.data.token);
           toast.success(data.data.message);
-          navigate('/home');
+          navigate('/home/LandingPage');
         } else {
           toast.error(data.data.message);
         }
@@ -53,6 +53,10 @@ const Login = () => {
 
   return (
     <>
+
+    <div className="heading-tab">
+    <h1>Email Marketing Tool</h1>
+  </div>
       <div className="container">
         <div className="modal">
           <div className="modal-container">
@@ -122,7 +126,7 @@ const Login = () => {
             </div>
             <div className="modal-right">
               <img
-                src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Y29tcHV0ZXJ8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60"
+                src={work}
                 alt=""
                 />
                 </div>

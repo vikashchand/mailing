@@ -6,6 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './Registration.css'
 import axios from 'axios';
+import work from '../../assets/work.jpg';
 
 const initialValues = {
     username: "",
@@ -43,8 +44,12 @@ const Registration = () => {
 
   return (
     <>
- 
+    <div >
+    <div className="heading-tab">
+    <h1>Email Marketing Tool</h1>
+  </div>
     <div className="container">
+    
     <ToastContainer/>
       <div className="modal">
         <div className="modal-container">
@@ -145,14 +150,14 @@ const Registration = () => {
           </div>
           <div className="modal-right">
                 <img
-                  src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Y29tcHV0ZXJ8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60"
+                  src={work}
                   alt=""
                 />
               </div>
         </div>
       </div>
     </div>
-  
+    </div>
     
     
     </>

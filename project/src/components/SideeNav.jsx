@@ -1,12 +1,21 @@
 
 
-import React from 'react';
+import React,{useState} from 'react';
 import jwtDecode from 'jwt-decode';
 import { NavLink } from 'react-router-dom';
 import './SideeNav.css'; // Import the CSS file
+import { FaBars } from 'react-icons/fa';
+import { FaEnvelope, FaTasks } from 'react-icons/fa';
+import {BsFillPeopleFill} from 'react-icons/bs';
+import { FcCustomerSupport } from 'react-icons/fc';
+import { AiFillHome } from 'react-icons/ai';
+import { FiLogOut} from 'react-icons/fi'
 
 const SideeNav = () => {
+
+
  // const navigate = useNavigate();
+ const [isNavOpen, setIsNavOpen] = useState(false);
   const token = localStorage.getItem('userInfo');
   let decodedToken = jwtDecode(token);
   const role = decodedToken.data[0]?.is_admin;
@@ -18,13 +27,21 @@ const SideeNav = () => {
     localStorage.removeItem('userInfo');
     window.location.href = '/login';
   };
+  const toggleNav = () => {
+    setIsNavOpen(!isNavOpen);
+  };
 
   return (
-    <div className="sidenav-container">
-    <div className='menu'>  MENU</div>
-   
+    <div className={`sidenav-container ${isNavOpen ? 'expanded' : 'minimized'}`}>
+    <div className="menu">
+      <FaBars className="hamburger-icon" onClick={toggleNav} />
+    </div>
+    <NavLink to={'/home/LandingPage'}>
+    {isNavOpen ? 'Home' : <AiFillHome />}
+      
+    </NavLink>
           <NavLink to={'/home/about'}>
-            SEND MAIL
+          {isNavOpen ? 'Send Mail' : <FaEnvelope />}
             
           </NavLink>
           
@@ -32,9 +49,15 @@ const SideeNav = () => {
 
             <>
             <NavLink to={'/home/task'}>
-              Manage templates
+            {isNavOpen ? 'Manage templates' : <FaTasks />}
             </NavLink>
-            <NavLink to="/home/employees">Manage Employees</NavLink>
+            <NavLink to="/home/employees">
+            {isNavOpen ? 'Manage Employees' : <BsFillPeopleFill />}
+            
+            
+            
+            
+            </NavLink>
 
             </>
           )
@@ -43,15 +66,15 @@ const SideeNav = () => {
         }
 
         <NavLink to={'/home/Customers'}>
-            Customer
-            Details
+       
+            {isNavOpen ? 'Customer Details' : <FcCustomerSupport/>}
+
+       
           </NavLink>
-          <br/>
-
-        <button className="logout-button" onClick={handleLogout}>
-        Logout
-      </button>
-
+          
+          <NavLink onClick={handleLogout}>
+          {isNavOpen ? 'LogOut' : <FiLogOut />}
+        </NavLink>
 
 
         </div>
