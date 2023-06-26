@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './sendMail.css';
 
 const ManageTemplate = () => {
@@ -29,10 +31,17 @@ const ManageTemplate = () => {
   };
 
   const handleDelete = templateId => {
+    const confirmed = window.confirm('Are you sure you want to remove this Template?');
+    if (confirmed) {
+        try {
     // Make a DELETE request to the backend to delete the template
     fetch(`http://localhost:5000/user/templates/${templateId}`, { method: 'DELETE' })
       .then(() => fetchTemplates())
-      .catch(error => console.log(error));
+      toast.success('Template deleted successfully');
+    } catch (error) {
+        console.error('Error removing templates:', error);
+      }
+    }
   };
 
   const handleCreate = () => {
@@ -61,6 +70,7 @@ const ManageTemplate = () => {
         .then(() => {
           setCurrentTemplate(null);
           fetchTemplates();
+          toast.success('Template updated successfully');
         })
         .catch(error => console.log(error));
     } else {
@@ -79,6 +89,7 @@ const ManageTemplate = () => {
             setIsCreatingTemplate(false);
             setPreviewTemplate(null);
             fetchTemplates();
+            toast.success('Template created successfully');
           })
           .catch(error => console.log(error));
       } else {
@@ -92,9 +103,12 @@ const ManageTemplate = () => {
   };
 
   return (
+
     <div className='managetemp-container'>
       {!isCreatingTemplate && !currentTemplate && !previewTemplate && (
         <div className=''>
+        <br></br>
+        <br></br>
         <br></br>
         <button onClick={handleCreate}>Create New Template</button>
           <h3>Available Templates</h3>
