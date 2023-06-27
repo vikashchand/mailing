@@ -1,10 +1,9 @@
 .managetemp-container {
-  height: 100vh;
   width: 100%;
-
   box-sizing: border-box;
   align-items: center;
   justify-content: center;
+  padding: 20px;
 }
 
 .templ {
@@ -46,7 +45,6 @@
   border-radius: 5px;
 }
 
-
 .template-preview .preview-body {
   width: 100%;
   max-width: 100%;
@@ -54,39 +52,34 @@
   font-size: 12px;
   margin-bottom: 0px;
 }
- .tableroww {
-  border: 1px solid rgb(255, 254, 254);
-  padding: 0.5px;
-  width: 10%;
-  align-items: center;
-    justify-content: center;
-    border-radius: 4px;
+
+table {
+  width: 100%;
+  border-collapse: collapse;
 }
 
- table {
-  border: 1px solid rgb(255, 254, 254);
-  border-radius: 4px;
-  width: 50%;
+th,
+td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
 }
-table button {
-  padding: 4px;
-  
+
+th {
+  background-color: #020000;
+  font-weight: bold;
 }
-/* Media Query for small devices */
+
 @media (max-width: 768px) {
-  .managetemp-container {
-    height: 100vh;
-   
-   
- 
-   
-   
-  }
-
   .templ {
     flex-direction: column;
   }
-
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
   .sendMail {
     flex-direction: column;
   }
@@ -103,33 +96,39 @@ table button {
     flex-direction: row;
     justify-content: center;
     margin-top: 10px;
-    
+  }
+  .templateedits button {
+    padding: 10px 20px;
+    font-size: 10px;
   }
 
   .template-preview {
-   
     width: 250px;
-   
     height: 600px;
     background-color: #140101;
     border-radius: 5px;
   }
-  
+
   .template-preview .preview-body {
     width: 100%;
-   
     height: 100%;
     font-size: 12px;
-    
   }
-  
 
-  .templateedits input,
-  .templateedits button {
-    margin: 3px;
-    padding: 10px 10px;
-    font-size: 10px;
-    border-radius: 10px;
-    
+  .templist {
+    width: 100%;
+  }
+
+  th,
+  td {
+    padding: 2px;
+    font-size: 8px;
+  }
+
+  /* Updated styles for buttons */
+  .tableroww button {
+    padding: 5px 8px;
+    font-size: 6px;
   }
 }
+
