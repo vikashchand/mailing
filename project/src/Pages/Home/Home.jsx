@@ -8,6 +8,7 @@ import jwtDecode from 'jwt-decode';
 import ManageUsers from '../manage users/ManageUsers';
 import CustomerDetails from '../Customers/CustomerDetails';
 import LandingPage from '../LandingPage/LandingPage';
+import Audit from '../Audit/Audit';
 
 const Home = () => {
   const token = localStorage.getItem('userInfo');
@@ -33,6 +34,7 @@ const Home = () => {
             <>
               <Route path="/task" element={<Task />} />
               <Route path="/employees" element={<ManageUsers />} />
+              <Route path="/audit" element={<Audit/>} />
             </>
           )}
         </Routes>

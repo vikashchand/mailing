@@ -12,6 +12,7 @@ import{MdAdminPanelSettings} from 'react-icons/md';
 
 import { AiFillHome } from 'react-icons/ai';
 import { FiLogOut} from 'react-icons/fi'
+import {SiAdguard} from 'react-icons/si';
 
 const SideeNav = () => {
 
@@ -42,7 +43,12 @@ const SideeNav = () => {
     {isNavOpen ? 'Home' : <AiFillHome />}
       
     </NavLink>
-          
+    <NavLink to={'/home/Customers'}>
+       
+    {isNavOpen ? 'Customer Details' : <HiUserGroup/>}
+
+
+  </NavLink>
           
           {role ==1 && (
 
@@ -57,19 +63,21 @@ const SideeNav = () => {
             
             
             </NavLink>
+            <NavLink to="/home/audit">
+            {isNavOpen ? 'Audit Logs' : <SiAdguard/>}
+            
+            
+            
+            
+            </NavLink>
 
             </>
           )
-        
+          
         
         }
 
-        <NavLink to={'/home/Customers'}>
        
-            {isNavOpen ? 'Customer Details' : <HiUserGroup/>}
-
-       
-          </NavLink>
           
           <NavLink onClick={handleLogout}>
           {isNavOpen ? 'LogOut' : <FiLogOut />}

@@ -14,4 +14,7 @@ Router.get('/templates', userService.fetchTemp);
 Router.post('/templates', userService.newTemp);
 Router.put('/templates/:id', userService.updateTemp);
 Router.delete('/templates/:id', userService.DeleteTemp);
+Router.get('/customers',userService.customers);
+Router.get('/audit',userService.audit);
+Router.get('/adminpowersaudit',userService.adminpowersaudit);
 module.exports=Router

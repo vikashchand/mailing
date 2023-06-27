@@ -45,6 +45,10 @@ const ManageUsers = () => {
 
     <div className="manage-users-container">
      <div className='emplist'>
+     <br></br>
+     <br></br>
+     <h2>"Empower and Secure"</h2>
+     <p> Managing Employee Access - Directory and Permissions Control</p>
       <h2>Employee List</h2>
       <table>
         <thead>

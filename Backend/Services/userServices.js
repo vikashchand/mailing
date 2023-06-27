@@ -483,49 +483,119 @@ const fetchTemp = (req, res) => {
 // POST request to create a new template
 const newTemp = (req, res) => {
   const { body, type } = req.body;
+  const email = getLoggedInUserEmail();
+  const insertQuery = `INSERT INTO adminpowersaudit (email, type, template_name) VALUES (?, ?, ?)`;
+  const insertValues = [email, "Creating", type];
 
-  dbCon.query('INSERT INTO templates (body, type) VALUES (?, ?)', [body, type], (error, results) => {
+  dbCon.query(insertQuery, insertValues, (error, results) => {
     if (error) {
       console.log(error);
-      res.status(500).json({ error: 'Internal Server Error' });
-    } else {
-      res.sendStatus(201);
+      return res.status(500).json({ error: 'Internal Server Error' });
     }
+    console.log('Executing SQL Query:', insertQuery, insertValues);
+  
+
+    dbCon.query('INSERT INTO templates (body, type) VALUES (?, ?)', [body, type], (error, results) => {
+      if (error) {
+        console.log(error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+      }
+
+      return res.sendStatus(201);
+    });
   });
 };
 
 
 // PUT request to update a template
 const updateTemp = (req, res) => {
-  const templateId = req.params.id;
-  const { body } = req.body;
+  const { body, type } = req.body;
+  const email = getLoggedInUserEmail();
+  const templateId = req.params.templateId; // Make sure to retrieve the templateId
 
-  dbCon.query('UPDATE templates SET body = ? WHERE id = ?', [body, templateId], (error, results) => {
+  const insertQuery = `INSERT INTO adminpowersaudit (email, type, template_name) VALUES (?, ?, ?)`;
+  const insertValues = [email, 'updating', type];
+
+  dbCon.query(insertQuery, insertValues, (error, auditResults) => {
     if (error) {
       console.log(error);
-      res.status(500).json({ error: 'Internal Server Error' });
-    } else {
-      res.sendStatus(200);
-      console.log(results);
+      return res.status(500).json({ error: 'Internal Server Error' });
     }
+    console.log(insertQuery,insertValues);
+
+    dbCon.query('UPDATE templates SET body = ? WHERE id = ?', [body, templateId], (error, updateResults) => {
+      if (error) {
+        console.log(error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+      }
+
+      return res.sendStatus(201);
+    });
   });
 };
+
+
 
 // DELETE request to delete a template
 const DeleteTemp =(req, res) => {
   const templateId = req.params.id;
+  const { type } = req.body;
+  const email = getLoggedInUserEmail();
+  
+  const insertQuery = `INSERT INTO adminpowersaudit (email, type, template_name) VALUES (?, ?, ?)`;
+  const insertValues = [email, 'Deleting', type];
+
+  dbCon.query(insertQuery, insertValues, (error, auditResults) => {
+    if (error) {
+      console.log(error);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    console.log(insertQuery,insertValues);
 
   dbCon.query('DELETE FROM templates WHERE id = ?', [templateId], (error, results) => {
     if (error) {
       console.log(error);
-      res.status(500).json({ error: 'Internal Server Error' });
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+
+    return res.sendStatus(201);
+  });
+});
+};
+
+
+const audit =(req, res) => {
+  dbCon.query('SELECT * FROM audit', (error, results) => {
+    if (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Failed to fetch audit logs' });
     } else {
-      res.sendStatus(200);
+      res.json(results);
     }
   });
 };
 
 
+const adminpowersaudit =(req, res) => {
+  dbCon.query('SELECT * FROM adminpowersaudit', (error, results) => {
+    if (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Failed to fetch audit logs' });
+    } else {
+      res.json(results);
+    }
+  });
+};
+const customers =(req, res) => {
+  dbCon.query('SELECT * FROM customers', (error, results) => {
+    if (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Failed to fetch audit logs' });
+    } else {
+      res.json(results);
+    }
+  });
+};
 
 
 
@@ -538,6 +608,6 @@ const DeleteTemp =(req, res) => {
         usersList,customerList,updateUserAccountStatus,
         updatecustomerStatus,
         forgetPassword,resetPassword,resetPasswordPost
-      ,fetchTemp,newTemp,updateTemp,DeleteTemp
+      ,fetchTemp,newTemp,updateTemp,DeleteTemp,audit,adminpowersaudit,customers
       
       };

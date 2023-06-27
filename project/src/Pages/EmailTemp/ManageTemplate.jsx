@@ -30,19 +30,50 @@ const ManageTemplate = () => {
     setPreviewTemplate(null);
   };
 
+  // const handleDelete = templateId => {
+  //   const confirmed = window.confirm('Are you sure you want to remove this Template?');
+  //   if (confirmed) {
+  //     try {
+  //       // Make a DELETE request to the backend to delete the template
+  //       fetch(`http://localhost:5000/user/templates/${templateId}`, { method: 'DELETE' })
+  //         .then(() => {
+  //           fetchTemplates();
+  //           toast.success('Template deleted successfully');
+  //         })
+  //         .catch(error => console.error('Error removing templates:', error));
+  //     } catch (error) {
+  //       console.error('Error removing templates:', error);
+  //     }
+  //   }
+  // };
   const handleDelete = templateId => {
     const confirmed = window.confirm('Are you sure you want to remove this Template?');
     if (confirmed) {
-        try {
-    // Make a DELETE request to the backend to delete the template
-    fetch(`http://localhost:5000/user/templates/${templateId}`, { method: 'DELETE' })
-      .then(() => fetchTemplates())
-      toast.success('Template deleted successfully');
-    } catch (error) {
+      try {
+        // Get the template type based on the templateId
+        const template = templates.find(template => template.id === templateId);
+        const templateType = template ? template.Type : '';
+  
+        // Make a DELETE request to the backend to delete the template
+        fetch(`http://localhost:5000/user/templates/${templateId}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ type: templateType }), // Send the template type in the request body
+        })
+          .then(() => {
+            fetchTemplates();
+            toast.success('Template deleted successfully');
+          })
+          .catch(error => console.error('Error removing templates:', error));
+      } catch (error) {
         console.error('Error removing templates:', error);
       }
     }
   };
+  
+
 
   const handleCreate = () => {
     setIsCreatingTemplate(true);
@@ -65,7 +96,7 @@ const ManageTemplate = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ body: currentTemplate.body }),
+        body: JSON.stringify({ body: currentTemplate.body,type: currentTemplate.Type  }),
       })
         .then(() => {
           setCurrentTemplate(null);
@@ -118,12 +149,16 @@ pauseOnFocusLoss
 draggable
 pauseOnHover
 theme="dark"
+
 />
+<br></br>
+
+<h3>Craft, Customize, and Convey</h3>
+
+   
       {!isCreatingTemplate && !currentTemplate && !previewTemplate && (
         <div className=''>
-        <br></br>
-        <br></br>
-        <br></br>
+        
        
         <button onClick={handleCreate}>Create New Template</button>
           <h3>Available Templates</h3>
