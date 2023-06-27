@@ -66,6 +66,22 @@
   height: 95.7vh;
 }
 
+
+
+.date-range {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 40%;
+ 
+}
+
+.date-range input {
+ 
+  background-image: url("../../assets/background.png");
+  background-color: rgb(47, 16, 90);
+  color: white;
+}
 /* Hide columns on small screens */
 @media only screen and (max-width: 600px) {
   
@@ -91,5 +107,14 @@
   .customer-details-container table button {
     padding: 0;
     font-size: 12px;
+  }
+
+
+  .date-range {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+   
   }
 }

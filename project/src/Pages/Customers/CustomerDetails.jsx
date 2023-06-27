@@ -165,19 +165,21 @@ const CustomerDetails = () => {
           pauseOnHover
           theme="dark"
         />
-
-        <h1>Mailing list details</h1>
         <div className="date-range">
-          <label htmlFor="start-date">Start Date:</label>
-          <input id="start-date" type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+        <label htmlFor="start-date ">Start Date:</label>
+        <input id="start-date" type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
 
-          <label htmlFor="end-date">End Date:</label>
-          <input id="end-date" type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
-        </div>
-        <button className='button' onClick={generateReport}>
-          <FaDownload className="download-icon" />
-          Generate Report
-        </button>
+        <label htmlFor="end-date">End Date:</label>
+        <input id="end-date" type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+     
+      <button onClick={generateReport}>
+        <FaDownload className="download-icon" />
+        Generate Report
+      </button>
+      </div>
+        <h1>Mailing list details</h1>
+        
+      
 
         <table>
           <thead>
