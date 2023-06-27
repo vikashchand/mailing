@@ -127,8 +127,9 @@ th {
 
   /* Updated styles for buttons */
   .tableroww button {
-    padding: 5px 8px;
+    padding: 10px 10px;
     font-size: 6px;
+    border-radius: 5px;
   }
 }
 
