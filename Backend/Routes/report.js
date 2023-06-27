@@ -6,8 +6,10 @@ const dbCon = require('../config/dbConfig');
 
 // Endpoint to generate the customer report
 router.get('/generateReport', (req, res) => {
-  const query = 'SELECT * FROM customers'; // Replace with your actual database query
-  dbCon.query(query, (err, results) => {
+  const { startDate, endDate } = req.query;
+
+  const query = `SELECT * FROM customers WHERE date BETWEEN ? AND ?`; // Replace 'date' with the actual column name in your database table
+  dbCon.query(query, [startDate, endDate], (err, results) => {
     if (err) {
       console.error('Error fetching customers:', err);
       res.status(500).json({ error: 'Internal server error' });
@@ -17,12 +19,14 @@ router.get('/generateReport', (req, res) => {
     const customers = results.map((customer) => ({
       customer_email: customer.customer_email,
       customer_name: customer.customer_name,
-      template_id: customer.template_id,
+      template_name: customer.template_name,
       status: customer.status,
+      uploadedby: customer.uploadedby,
+      date: customer.date,
     }));
 
     try {
-      const csvFields = ['customer_email', 'customer_name', 'template_id', 'status'];
+      const csvFields = ['customer_email', 'customer_name', 'template_name', 'status', 'uploadedby', 'date'];
       const csvData = json2csv.parse(customers, { fields: csvFields });
       const fileName = 'customer_report.csv';
 
