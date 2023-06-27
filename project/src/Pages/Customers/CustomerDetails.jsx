@@ -79,7 +79,83 @@ const handleCustomerCheckboxChange = (event, customerEmail) => {
 //   } catch (error) {
 //     console.error('Error updating account status:', error);
 //   }
+// // };
+// const handleSendNow = async () => {
+//   try {
+//     // Perform the send now action for the selected customers
+//     for (const customerEmail of selectedCustomers) {
+//       const customer = customers.find(user => user.customer_email === customerEmail);
+//       if (customer && customer.status !== 'sent') {
+//         try {
+//           await axios.post('http://localhost:5000/mail/send-email', {
+//             recipientEmail: customerEmail,
+//             templateName: customer.template_name
+//           });
+//           // If email sent successfully, update the status to 'sent'
+//           await axios.put(`http://localhost:5000/user/updatecustomerDetails/${customerEmail}`, { status: 'sent' });
+//           toast.success(`Email sent to ${customerEmail}`); // Display success toast message
+//         } catch (error) {
+//           console.error('Error sending email:', error);
+//           const errorMessage = error.response?.data?.error || 'Error sending email';
+//           toast.error(errorMessage); // Display error toast message
+//           // If an error occurred while sending email, update the status to 'error' and display the error message
+//           await axios.put(`http://localhost:5000/user/updatecustomerDetails/${customerEmail}`, { status: errorMessage });
+//         }
+//       }
+//     }
+//     fetchUsers();
+//     setSelectedCustomers([]); // Clear the selected customers
+//     setSelectAll(false); // Uncheck the "Select All" checkbox
+//   } catch (error) {
+//     console.error('Error updating account status:', error);
+//     toast.error('Error sending email'); // Display error toast message
+//   }
 // };
+
+
+// const handleSendNow = async () => {
+//   try {
+//     // Perform the send now action for the selected customers
+//     for (const customerEmail of selectedCustomers) {
+//       const customer = customers.find(user => user.customer_email === customerEmail);
+//       if (customer && customer.status !== 'sent') {
+//         try {
+//           const response = await axios.post('http://localhost:5000/mail/send-email', {
+//             recipientEmail: customerEmail,
+//             templateName: customer.template_name
+//           });
+
+//           // If email sent successfully, update the status to 'sent'
+//           await axios.put(`http://localhost:5000/user/updatecustomerDetails/${customerEmail}`, { status: 'sent' });
+//           toast.success(`Email sent to ${customerEmail}`); // Display success toast message
+
+//           // Check the response from the backend for recipient email existence
+//           if (response.data.error === 'Recipient email does not exist') {
+//             await axios.put(`http://localhost:5000/user/updatecustomerDetails/${customerEmail}`, { status: 'Recipient email does not exist' });
+//           }
+//         } catch (error) {
+//           console.error('Error sending email:', error);
+//           const errorMessage = error.response?.data?.error || 'Error sending email';
+//           toast.error(errorMessage); // Display error toast message
+
+//           // If an error occurred while sending email, update the status to the error message
+//           await axios.put(`http://localhost:5000/user/updatecustomerDetails/${customerEmail}`, { status: errorMessage });
+//         }
+//       }
+//     }
+
+//     fetchUsers();
+//     setSelectedCustomers([]); // Clear the selected customers
+//     setSelectAll(false); // Uncheck the "Select All" checkbox
+//   } catch (error) {
+//     console.error('Error updating account status:', error);
+//     toast.error('Error sending email'); // Display error toast message
+//   }
+// };
+
+
+
+
 const handleSendNow = async () => {
   try {
     // Perform the send now action for the selected customers
@@ -87,13 +163,21 @@ const handleSendNow = async () => {
       const customer = customers.find(user => user.customer_email === customerEmail);
       if (customer && customer.status !== 'sent') {
         try {
-          await axios.post('http://localhost:5000/mail/send-email', {
+          const response = await axios.post('http://localhost:5000/mail/send-email', {
             recipientEmail: customerEmail,
             templateName: customer.template_name
           });
-          // If email sent successfully, update the status to 'sent'
-          await axios.put(`http://localhost:5000/user/updatecustomerDetails/${customerEmail}`, { status: 'sent' });
-          toast.success(`Email sent to ${customerEmail}`); // Display success toast message
+          
+          // Check the response from the backend
+          if (response.status === 200) {
+            // If email sent successfully, update the status to 'sent'
+            await axios.put(`http://localhost:5000/user/updatecustomerDetails/${customerEmail}`, { status: 'sent' });
+            toast.success(`Sending mail to ${customerEmail}`); // Display success toast message
+          } else if (response.status === 400 && response.data.error === 'Recipient email does not exist') {
+            // If recipient email does not exist, update the status to the error message
+            await axios.put(`http://localhost:5000/user/updatecustomerDetails/${customerEmail}`, { status: response.data.error });
+            toast.error(response.data.error); // Display error toast message
+          }
         } catch (error) {
           console.error('Error sending email:', error);
           const errorMessage = error.response?.data?.error || 'Error sending email';
@@ -113,19 +197,23 @@ const handleSendNow = async () => {
 };
 
 
+useEffect(() => {
+  const interval = setInterval(fetchUsers, 1000); // Run fetchUsers every 10 seconds
 
-  useEffect(() => {
-    fetchUsers();
-  }, []);
-
-  const fetchUsers = async () => {
-    try {
-      const response = await axios.get('http://localhost:5000/user/customerDetails'); // Replace with your API endpoint to fetch users
-      setCustomers(response.data);
-    } catch (error) {
-      console.error('Error fetching users:', error);
-    }
+  return () => {
+    clearInterval(interval); // Clear the interval when the component unmounts
   };
+}, []);
+
+const fetchUsers = async () => {
+  try {
+    const response = await axios.get('http://localhost:5000/user/customerDetails'); // Replace with your API endpoint to fetch users
+    setCustomers(response.data);
+  } catch (error) {
+    console.error('Error fetching users:', error);
+  }
+};
+
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
@@ -168,6 +256,8 @@ const handleSendNow = async () => {
   return (
     <div className="customer-details-container">
       <div className="custlist">
+      <br></br>
+      <br></br>
         <h2>Upload Excel Sheet</h2>
         <form className='fm' onSubmit={handleSubmit}>
           <label htmlFor="file-upload" className="template-section custom-file-upload">
